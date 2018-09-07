@@ -19,7 +19,7 @@ alter table users
     alter column isadmin SET DEFAULT false;
 
 /* alter table users
-    add primary key (id);
+    add constraint aseke primary key(id);
 */
 
 create table tasks(
