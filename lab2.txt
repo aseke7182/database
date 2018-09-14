@@ -1,0 +1,42 @@
+create database lab2;
+
+create table countries(
+  country_id serial primary key,
+  country_name varchar(999),
+  region_id int,
+  populatioin int
+);
+
+insert  into  countries values (DEFAULT , 'ARGENTINA', 10, 45000000);
+
+insert into countries (country_id, country_name) values (default , 'RUSSIA');
+
+insert into countries values (default , 'BRAZIL', null , 50000000);
+
+insert into countries values  (default ,'USA', 52, 179000000),
+                              (default , 'CHINA', 1 , 150000000),
+                              (default , 'POLAND', 15, 14000000);
+
+alter table countries alter column country_name set default 'KAZAKHSTAN';
+
+insert into countries values (default , default , 14, 17000000);
+
+insert into countries values (default);
+
+create table countries_new(
+  LIKE countries
+);
+
+INSERT INTO countries_new SELECT * FROM countries RETURNING *;
+
+update countries SET region_id = 1 WHERE region_id IS NULL;
+
+update countries set populatioin = populatioin + populatioin/10 returning  country_name, populatioin as "New Population";
+
+DELETE FROM countries WHERE populatioin < 100000;
+
+DELETE FROM countries_new AS c USING countries AS n WHERE c.country_id = n.country_id RETURNING *;
+
+delete from countries * returning *;
+
+SELECT * FROM countries;
