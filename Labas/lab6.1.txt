@@ -1,0 +1,50 @@
+create database  lab6 ;
+
+create table locations(
+  location_id serial primary key ,
+  street_address varchar(25),
+  postal_code varchar(12),
+  city varchar(30),
+  state_province varchar(12)
+);
+
+create table departments(
+  department_id serial primary key ,
+  department_name varchar(50) unique ,
+  budget integer,
+  location_id integer references lacotions
+);
+
+create table employees(
+  employee_id serial primary key ,
+  first_name varchar(50),
+  last_name varchar(50),
+  email varchar(50),
+  phone_numbeer varchar(20),
+  salary integer,
+  manager_id integer references employees,
+  department_id integer references departments
+);
+
+create table job_grades(
+  grade char(1),
+  lowest_salary integer,
+  highest_salary integer
+);
+
+select first_name, last_name, department_name, city, state_province from employees as e
+    inner join departments as d on e.department_id = d.department_id
+    inner join locations on e.employee_id is not null;
+--3
+select first_name, last_name, salary, grade from employees
+    inner join job_grades on employee_id is not null;
+--4
+select e1.first_name,e1.last_name,e1.salary,grade from employees as e1
+    inner join employees as e on e.employee_id = 120
+    inner join job_grades on e.employee_id is not null where e1.salary > e.salary
+--5
+select employees.first_name from employees
+    inner join employees as e on employees.manager_id = e.employee_id;
+--6 ( Manager name ? )
+select e.first_name,e.last_name,d.department_id,d.department_name
+    from employees as e left outer join departments as d on e.department_id = d.department_id;
