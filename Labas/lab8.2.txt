@@ -1,0 +1,41 @@
+create database lab8;
+
+create table salesman(
+  salesman_id int primary key ,
+  name varchar(250),
+  city varchar(250),
+  commission float
+);
+
+create table customers(
+  customer_id int primary key ,
+  cust_name varchar(250),
+  city varchar(250),
+  grade int,
+  salesman_id  int references salesman(salesman_id)
+);
+
+create table orders(
+  ord_no int primary key ,
+  purch_amt float,
+  ord_date date,
+  customer_id int references customers(customer_id),
+  salesman_id int references salesman(salesman_id)
+);
+
+create role junior_dev login password 'aseke';
+
+create view four as select name,avg(purch_amt), sum(purch_amt) from salesman join orders using (salesman_id) group by name;
+
+create view five as select city,count(*) from salesman s join orders o using (salesman_id) group by s.city;
+grant all privileges on five to junior_dev;
+
+create view six as select name from salesman where grade in ( select grade from salesman order by grade asc limit 1);
+grant select  on six to junior_dev;
+
+create view seven as select grade,count(*) from customers c join salesman s using (salesman_id) group by  grade;
+
+create view eight as select name from salesman join orders o using (salesman_id) group by name having count(*) > 1;
+
+create role intern;
+reassign owned by junior_dev to intern;

@@ -1,0 +1,10 @@
+create index ind1 on countries using hash (name);
+
+create index ind2 on countries using hash (name,surname);
+
+create unique index ind3 on employees (salary);
+
+create index ind4 on employees(substring(name from 1 for 4)) ;
+
+create index ind51 on employees(salary) ;
+create index ind52 on departments(budget);
